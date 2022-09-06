@@ -1,4 +1,16 @@
+const fs = require('fs')
 const express = require('express');
+
+async function took(){
+    try {
+        let info = await fs.promises.readFile(`./productos.txt`,'utf-8')
+        console.log(info);
+        return info
+    } catch (error) {
+        console.log('Se presento un error ' + error);
+    }
+}
+
 
 const PORT = process.env.PORT || 8080
 
@@ -9,8 +21,9 @@ app.get('/',(req,res)=>{
 })
 
 app.get('/productos',(req,res)=>{
-    res.send(`Esta es la pagina de productos`)
-    res.send(productos.txt)
+    took()
+    res.send(`Esta es la pagina de productos `)
+
 })
 
 const connectedServer=app.listen(PORT,()=>{
