@@ -7,9 +7,24 @@ async function took(){
         console.log(info);
         return info
     } catch (error) {
-        console.log('Se presento un error ' + error);
+        console.log('Se presento un error en tomar info ' + error);
     }
 }
+
+async function getRandomInt(max) {
+    try {
+        let info2 = await fs.promises.readFile(`./productos.txt`,'utf-8')
+        let infoJS=JSON.stringify(info2)
+        let productRandom = infoJS[Math.floor(Math.random() * max)]
+        console.log(productRandom);
+        return productRandom;
+    } catch (error) {
+        console.log('Se presento un error en random ' + error);
+    }
+
+  }
+
+
 
 
 const PORT = process.env.PORT || 8080
@@ -21,9 +36,11 @@ app.get('/',(req,res)=>{
 })
 
 app.get('/productos',(req,res)=>{
-    took()
-    res.send(`Esta es la pagina de productos `)
+    took().then(products=>{res.send(JSON.parse(products))}) 
+})
 
+app.get('/productoRandom',(req,res)=>{
+    getRandomInt(3).then(ran=>{res.send(JSON.stringify(ran))});
 })
 
 const connectedServer=app.listen(PORT,()=>{
